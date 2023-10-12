@@ -1,17 +1,47 @@
+import 'dart:collection';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:whether_app/ForecastSlider.dart';
+import 'AdditionaInfoData.dart';
+import 'package:http/http.dart'as http;
 
-class HomePage extends StatelessWidget{
+class HomePage extends StatefulWidget{
   const HomePage({super.key});
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+class _HomePageState extends State<HomePage> {
+  late Future<Map<String,dynamic>> weather;
+  Future<Map<String,dynamic>> getCurrentWeather() async {
+    try {
+      String keys = 'ht';
+      final res = await http.get(Uri.parse(keys));
+        final data = jsonDecode(res.body);
+        if (data['cod'] != '200') {
+          throw('Error of server data is ');
+        }
+      return data;
+    }
+    catch(e){
+      throw e.toString();
+    }
+  }
+  @override
+  void initState() {
+    weather=getCurrentWeather();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context){
-
     return  Scaffold(
       appBar: AppBar(
         actions:  [
           GestureDetector(child:
               IconButton(onPressed:(){
-              print("Refresh");
+                setState(() {
+
+                });
               }, icon:const Icon(Icons.refresh))
           ),
         ],
@@ -23,120 +53,101 @@ class HomePage extends StatelessWidget{
         centerTitle: true,
 
       ),
-      body:   Column(
-        children: [
-          Container(
-            width: double.infinity,
-            margin:const EdgeInsets.only(top: 20,right: 10,left: 10),
-            padding: const EdgeInsets.all(21),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(40)),
-              color: Colors.black26,
-            ),
-            child: const Column(
-              children: [
-                Text('300.6 ^F',style:TextStyle(fontSize: 50),),
-                Icon(Icons.cloud,size: 70),
-                Text('Rain',style:TextStyle(fontSize: 50),
-                ),
-              ],
-            ),
-          ),
-          //2nd Children
-          const Padding(
-            padding: EdgeInsets.only(left: 21,top: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text('Weather ForeCast',
-                  style:TextStyle(fontSize: 25),
-                ),
-              ],
-            ),
-          ),
+      body:FutureBuilder(future: getCurrentWeather() ,
+          builder: (context,snapshot) {
+          print(snapshot.data);
+          if(snapshot.connectionState==ConnectionState.waiting){
+          return const Center(child:  CircularProgressIndicator.adaptive());
+          }
+          if(snapshot.hasError){
+            return  Center(child: Text('SnapShot ${snapshot.error.toString()}'));
+          }
+          final data=snapshot.data!;
+          final curr=data['list'][0]['main']['temp'];
+          final wStatus=data['list'][0]['weather'][0]['main'];
+          final humidity=data['list'][0]['main']['humidity'];
+          final pressure=data['list'][0]['main']['pressure'];
+          final windSpeed=data['list'][0]['wind']['speed'];
 
-          const SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                MyWidget(),MyWidget(),MyWidget(),MyWidget(),MyWidget(),
-              ],
-            ),
-          ),
 
-          const Padding(
-            padding: EdgeInsets.only(left: 18,top: 25),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+          return Column(
               children: [
-                Text('Additional Information :',
-                  style:TextStyle(fontSize: 25),
-                ),
-              ],
-            ),
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-            margin:EdgeInsets.only(top: 9,left: 12),
-            padding: EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(23)),
-              color: Color.fromARGB(255, 30, 30, 30),
-            ),
-            child: const Center(
-              child: Column(
-                children: [
-                  Icon(Icons.water_drop,size: 40,),
-                  Text('Humidity',style:TextStyle(fontSize: 12),),
-                  Text('94',style:TextStyle(fontSize: 30),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(top: 20, right: 10, left: 10),
+                  padding: const EdgeInsets.all(21),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(40)),
+                    color: Colors.black26,
                   ),
-                ],
-              ),
-            ),
-          ), Container(
-                margin:const EdgeInsets.only(top: 9,left: 12),
-                padding: const EdgeInsets.all(12),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(23)),
-                  color: Color.fromARGB(255, 30, 30, 30),
-                ),
-                child: const Center(
-                  child: Column(
+                  child:  Column(
                     children: [
-                      Icon(Icons.air_rounded,size: 40,),
-                      Text('Wind Speed',style:TextStyle(fontSize: 12),),
-                      Text('94',style:TextStyle(fontSize: 30),
+                      Text('$curr K', style: const TextStyle(fontSize: 50),),
+                      const Icon(Icons.cloud, size: 70),
+                       Text('$wStatus', style: const TextStyle(fontSize: 30),
                       ),
                     ],
                   ),
                 ),
-              ), Container(
-                margin:const EdgeInsets.only(top: 9,left: 12),
-                padding: const EdgeInsets.all(12),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(23)),
-                  color: Color.fromARGB(255, 30, 30, 30),
-                ),
-                child: const Center(
-                  child: Column(
+                //2nd Children Weather Forcast Scroll
+                const Padding(
+                  padding: EdgeInsets.only(left: 21, top: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.ac_unit_rounded,size: 40,),
-                      Text('Pressure',style:TextStyle(fontSize: 12),),
-                      Text('94',style:TextStyle(fontSize: 30),
+                      Text('Weather ForeCast',
+                        style: TextStyle(fontSize: 25),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                 SizedBox(
+                   height: 130,
+                   width: double.infinity,
+                   child: ListView.builder(
+                     scrollDirection: Axis.horizontal,
+                     itemCount: 39,
+                     itemBuilder:(context, index) {
+                       return MyWidget(
+                         time:
+                         {data['list'][index+1]['dt_txt']}.toString().substring(11,17),
+
+                         temp: '${data['list'][index+1]['main']['temp']}',
+
+                         icon: Icons.cloud,);
+                   },
+                   ),
+                 ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 18, top: 25),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('Additional Information :',
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    ],
+                  ),
+                ),
+                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    AdditionalWidgetData(
+                        label: 'humidity', data: '$humidity', iconn: Icons.water_drop),
+                    AdditionalWidgetData(label: 'Wind Speed',
+                        data: '$windSpeed',
+                        iconn: Icons.air_rounded),
+                    AdditionalWidgetData(label: 'Pressure',
+                        data: '$pressure',
+                        iconn: Icons.ac_unit_rounded),
+                  ],
+                )
+
+
+              ],
+            );
+          }
           )
-
-
-        ],
-      ),
     );
   }
 }

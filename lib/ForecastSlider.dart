@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
-
+  final String time,temp;
+  final IconData icon;
+  const MyWidget({
+    super.key,required this.time,required this.temp,required this.icon,
+  }
+  );
   @override
   Widget build(BuildContext context) {
     return  Container(
@@ -14,11 +18,12 @@ class MyWidget extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(29)),
         color: Colors.black26,
       ),
-      child: const Column(
+      child:  Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text('09:12',style:TextStyle(fontSize: 24),),
-          Icon(Icons.cloud,size: 26),
-          Text('301.17',style:TextStyle(fontSize: 18),
+          Text(time,style:const TextStyle(fontSize: 12),),
+          Icon(icon,size: 26),
+          Text(temp,style:const TextStyle(fontSize: 18),
           ),
         ],
       ),

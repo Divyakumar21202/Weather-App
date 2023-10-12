@@ -12,9 +12,7 @@ class MyWhetherApp extends StatelessWidget{
       title: 'Whether App',
       debugShowCheckedModeBanner: false,
       home: const WhetherAppHome(),
-      theme:ThemeData.dark(useMaterial3:true).copyWith(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 30, 30, 30),
-      ),
+      theme:ThemeData.dark(useMaterial3:true)
     );
   }
 }
