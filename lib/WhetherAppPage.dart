@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   late Future<Map<String,dynamic>> weather;
   Future<Map<String,dynamic>> getCurrentWeather() async {
     try {
-      String keys = 'ht';
+      String keys = 'Your_API URL+KEY ';
       final res = await http.get(Uri.parse(keys));
         final data = jsonDecode(res.body);
         if (data['cod'] != '200') {
@@ -142,8 +142,6 @@ class _HomePageState extends State<HomePage> {
                         iconn: Icons.ac_unit_rounded),
                   ],
                 )
-
-
               ],
             );
           }
