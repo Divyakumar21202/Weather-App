@@ -9,7 +9,7 @@ To use this weather app, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/Divyakumar21202/Weather-App
    ```
 
 2. Open the project in your preferred Flutter development environment.
