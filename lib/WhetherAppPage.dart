@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   late Future<Map<String,dynamic>> weather;
   Future<Map<String,dynamic>> getCurrentWeather() async {
     try {
-      String keys = 'Your_API URL+KEY ';
+      String keys = 'https://api.openweathermap.org/data/2.5/forecast?q=bhubaneswar&appid=b943e3e01fe22d7e293c2f27038af612';
       final res = await http.get(Uri.parse(keys));
         final data = jsonDecode(res.body);
         if (data['cod'] != '200') {
