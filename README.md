@@ -55,4 +55,8 @@ To use this weather app, follow these steps:
 
 - Don't forget to replace the placeholder API key for the weather service with your own valid key.
 
-Feel free to modify and expand upon this weather app according to your requirements and preferences. Happy coding!
+Feel free to modify and expand upon this weather app according to your requirements and preferences. Happy coding!🧑‍💻🧑‍💻🧑‍💻
+
+<div align="center">
+    <img src="https://github.com/Divyakumar21202/Weather-App/assets/124331485/91a92674-762c-46fc-9178-31f964b09b61" alt="ThisCodeWillOneHundredPercentHelpYouJustinMitchelGIF" style="max-width: 100%; height: auto;">
+</div>
