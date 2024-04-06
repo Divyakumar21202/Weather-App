@@ -2,6 +2,11 @@
 
 This is a simple weather app created in Flutter that allows you to check the current weather. The app fetches weather data from a provided API and displays it in a user-friendly interface.
 
+## ScreenShots :
+<img src="https://github.com/Divyakumar21202/Weather-App/assets/124331485/ea4331e4-9d92-4176-b021-95a8052de1de" width="200" height="500">
+<img src="https://github.com/Divyakumar21202/Weather-App/assets/124331485/d8dea1a0-b87b-4601-9633-ebb625206dac" width="200" height="500">
+<img src="https://github.com/Divyakumar21202/Weather-App/assets/124331485/669b0783-5a23-46ba-8e72-729dc2d65fd3" width="200" height="500">
+
 ## Getting Started
 
 To use this weather app, follow these steps:
@@ -28,6 +33,7 @@ To use this weather app, follow these steps:
    ```bash
    flutter run
    ```
+   
 
 ## Features
 
